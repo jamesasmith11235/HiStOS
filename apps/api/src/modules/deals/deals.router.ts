@@ -1,15 +1,15 @@
-import { Router } from "express";
+const express = require("express");
 
-export const dealsRouter = Router();
+export const dealsRouter = express.Router();
 
-// Temporary in-memory store for testing
+// In-memory deals; later we'll swap this for a DB
 const deals: Array<{ id: string; name: string }> = [];
 
-dealsRouter.get("/", (_req, res) => {
+dealsRouter.get("/", (_req: any, res: any) => {
   res.json({ data: deals });
 });
 
-dealsRouter.post("/", (req, res) => {
+dealsRouter.post("/", (req: any, res: any) => {
   const { name } = req.body;
   const id = `deal_${Date.now()}`;
   const deal = { id, name: name || "Untitled deal" };
