@@ -1,9 +1,14 @@
 const express = require("express");
 
+type Deal = {
+  id: string;
+  name: string;
+};
+
 export const dealsRouter = express.Router();
 
-// In-memory deals; later we'll swap this for a DB
-const deals: Array<{ id: string; name: string }> = [];
+// In-memory store for now; we'll replace this with a DB later
+const deals: Deal[] = [];
 
 dealsRouter.get("/", (_req: any, res: any) => {
   res.json({ data: deals });
@@ -11,9 +16,15 @@ dealsRouter.get("/", (_req: any, res: any) => {
 
 dealsRouter.post("/", (req: any, res: any) => {
   const { name } = req.body;
+
   const id = `deal_${Date.now()}`;
-  const deal = { id, name: name || "Untitled deal" };
+  const deal: Deal = {
+    id,
+    name: name || "Untitled deal"
+  };
+
   deals.push(deal);
+
   res.status(201).json({ data: deal });
 });
 

@@ -1,13 +1,23 @@
 import Link from "next/link";
 import { apiGet, apiPost } from "@/lib/api";
 
+type Deal = {
+  id: string;
+  name: string;
+};
+
+type DealsResponse = {
+  data: Deal[];
+};
+
 export default async function Home() {
-  const deals = await apiGet("/api/deals");
+  const { data } = (await apiGet("/api/deals")) as DealsResponse;
 
   async function createDeal() {
     "use server";
 
     await apiPost("/api/deals", {
+      // name could come from a form later; hard-coded for now
       name: "New Deal " + Date.now()
     });
   }
@@ -26,10 +36,10 @@ export default async function Home() {
       </form>
 
       <ul className="mt-6 space-y-2">
-        {deals.data.map((d: any) => (
-          <li key={d.id} className="border p-3 rounded bg-gray-50">
-            <Link href={`/deals/${d.id}`} className="underline">
-              {d.name}
+        {data.map((deal) => (
+          <li key={deal.id} className="border p-3 rounded bg-gray-50">
+            <Link href={`/deals/${encodeURIComponent(deal.id)}`} className="underline">
+              {deal.name}
             </Link>
           </li>
         ))}

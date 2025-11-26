@@ -1,6 +1,15 @@
 import Link from "next/link";
 import { apiGet } from "@/lib/api";
 
+type Deal = {
+  id: string;
+  name: string;
+};
+
+type DealResponse = {
+  data: Deal;
+};
+
 type DealPageProps = {
   params: { id: string };
 };
@@ -8,8 +17,9 @@ type DealPageProps = {
 export default async function DealPage({ params }: DealPageProps) {
   const { id } = params;
 
-  const response = await apiGet(`/api/deals/${id}`);
-  const deal = response.data;
+  const { data: deal } = (await apiGet(
+    `/api/deals/${encodeURIComponent(id)}`
+  )) as DealResponse;
 
   return (
     <main className="p-8 max-w-2xl mx-auto">
