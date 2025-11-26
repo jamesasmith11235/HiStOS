@@ -16,3 +16,14 @@ dealsRouter.post("/", (req: any, res: any) => {
   deals.push(deal);
   res.status(201).json({ data: deal });
 });
+
+dealsRouter.get("/:id", (req: any, res: any) => {
+  const { id } = req.params;
+  const deal = deals.find((d) => d.id === id);
+
+  if (!deal) {
+    return res.status(404).json({ error: "Deal not found" });
+  }
+
+  res.json({ data: deal });
+});
