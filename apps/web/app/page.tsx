@@ -17,7 +17,6 @@ export default async function Home() {
     "use server";
 
     await apiPost("/api/deals", {
-      // name could come from a form later; hard-coded for now
       name: "New Deal " + Date.now()
     });
   }
@@ -38,7 +37,10 @@ export default async function Home() {
       <ul className="mt-6 space-y-2">
         {data.map((deal) => (
           <li key={deal.id} className="border p-3 rounded bg-gray-50">
-            <Link href={`/deals/${encodeURIComponent(deal.id)}`} className="underline">
+            <Link
+              href={`/deals/${encodeURIComponent(deal.id)}`}
+              className="underline"
+            >
               {deal.name}
             </Link>
           </li>
